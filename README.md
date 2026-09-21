@@ -1,84 +1,53 @@
 # Azure DevOps Operations Lab
 
-```{=html}
-<p align="center">
-```
-`<strong>`{=html}Cloud operations, automation, infrastructure as code,
-and CI/CD in one practical project.`</strong>`{=html}
-```{=html}
-</p>
-```
-```{=html}
-<p align="center">
-```
-`<img src="https://github.com/Iamaditya9/azure-devops-operations-lab/actions/workflows/ci.yml/badge.svg" alt="CI">`{=html}
-`<img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python">`{=html}
-`<img src="https://img.shields.io/badge/Azure-DevOps-0078D4?logo=microsoftazure&logoColor=white" alt="Azure">`{=html}
-`<img src="https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white" alt="Terraform">`{=html}
-`<img src="https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white" alt="Docker">`{=html}
-```{=html}
-</p>
-```
+**A practical DevOps lab covering Azure, Terraform, Docker, CI/CD, automation, and operational APIs.**
+
+[![CI](https://github.com/Iamaditya9/azure-devops-operations-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Iamaditya9/azure-devops-operations-lab/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Azure](https://img.shields.io/badge/Azure-DevOps-0078D4?logo=microsoftazure&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
+
+---
+
+## 📌 Quick Navigation
+
+[About](#about) · [What I Built](#what-i-built) · [Architecture](#architecture) · [API](#api) · [Setup](#local-setup) · [Testing](#testing) · [Docker](#docker) · [Terraform](#terraform) · [CI/CD](#cicd) · [Project Structure](#project-structure)
+
+---
+
 ## About
 
-I built this project as a hands-on Azure and DevOps operations lab
-rather than a collection of disconnected examples.
+I built this project as a hands-on Azure and DevOps operations lab rather than a collection of disconnected examples.
 
-It brings together a small FastAPI operations service, configuration
-validation, Python and PowerShell tooling, Terraform infrastructure,
-Docker, and GitHub Actions. The goal is to show how these pieces fit
-together in a realistic development workflow.
+The project brings together a small FastAPI operations service, environment validation, Python and PowerShell tooling, Terraform infrastructure, Docker, and GitHub Actions.
 
-The core application and tests run locally without an Azure
-subscription. The Terraform and Azure REST examples are kept separate so
-the repository is useful for local development while still demonstrating
-how the project can connect to Azure.
+The goal was to work through a practical development flow:
 
-------------------------------------------------------------------------
+**code → test → containerize → validate → automate → provision**
 
-## What I built
+The API and tests can run locally without an Azure subscription. The Terraform and Azure REST examples are kept separate so the project can be explored without requiring live cloud access.
 
-  -----------------------------------------------------------------------
-  Area                                What is included
-  ----------------------------------- -----------------------------------
-  API                                 FastAPI operations service with
-                                      health, environment, and
-                                      deployment-validation endpoints
+---
 
-  Automation                          Python and PowerShell scripts for
-                                      environment and operational checks
+## ⚙️ What I Built
 
-  Azure                               REST API request pattern with a
-                                      safe dry-run mode
+| Area | Implementation |
+|---|---|
+| **Operations API** | FastAPI service for health, environment, and deployment validation |
+| **Automation** | Python and PowerShell operational scripts |
+| **Azure Integration** | Azure REST API request pattern with dry-run support |
+| **Infrastructure** | Terraform configuration for Azure resources |
+| **Containers** | Dockerfile and Docker Compose |
+| **CI/CD** | GitHub Actions for application and Terraform validation |
+| **Testing** | Pytest API and configuration tests |
+| **Configuration** | Environment-based validation with secrets kept outside Git |
 
-  Infrastructure                      Terraform configuration for Azure
-                                      resources
+---
 
-  Containers                          Dockerfile and Docker Compose
-                                      configuration
+## 🏗️ Architecture
 
-  CI/CD                               GitHub Actions workflows for
-                                      application and Terraform
-                                      validation
-
-  Testing                             API and configuration-validation
-                                      tests with pytest
-
-  Configuration                       Environment-based validation with
-                                      secrets kept outside Git
-  -----------------------------------------------------------------------
-
-```{=html}
-<details>
-```
-```{=html}
-<summary>
-```
-`<strong>`{=html}Architecture`</strong>`{=html}
-```{=html}
-</summary>
-```
-``` text
+```text
                          GitHub Actions
                     test / build / validation
                               |
@@ -93,24 +62,17 @@ how the project can connect to Azure.
        Operations Scripts
 ```
 
-The application, infrastructure, and operations tooling are
-intentionally kept as separate concerns.
+---
 
-```{=html}
-</details>
-```
+## 🔎 API
 
-------------------------------------------------------------------------
-
-## API
-
-The FastAPI service exposes a small set of operational endpoints.
+The FastAPI service provides a small operational API that can be explored through Swagger UI.
 
 ### `GET /health`
 
-Returns a simple service health response.
+Basic service health check.
 
-``` json
+```json
 {
   "status": "ok",
   "service": "operations-api"
@@ -121,21 +83,19 @@ Returns a simple service health response.
 
 Checks whether the required runtime configuration is present:
 
--   `APP_ENV`
--   `AZURE_SUBSCRIPTION_ID`
--   `AZURE_RESOURCE_GROUP`
+- `APP_ENV`
+- `AZURE_SUBSCRIPTION_ID`
+- `AZURE_RESOURCE_GROUP`
 
-It reports missing configuration without requiring a live Azure
-connection.
+The endpoint reports missing configuration without requiring a live Azure connection.
 
 ### `POST /deployments`
 
-Validates deployment information such as service, environment, and
-version.
+Validates deployment information such as service, environment, and version.
 
-Example:
+Example request:
 
-``` json
+```json
 {
   "service": "operations-api",
   "environment": "dev",
@@ -143,9 +103,9 @@ Example:
 }
 ```
 
-Response:
+Example response:
 
-``` json
+```json
 {
   "service": "operations-api",
   "environment": "dev",
@@ -154,27 +114,29 @@ Response:
 }
 ```
 
-### Try it locally
+### Try It Locally
 
-`http://127.0.0.1:8000/docs`
+Start the API and open:
 
-FastAPI's Swagger UI provides an interactive way to test the endpoints.
+**http://127.0.0.1:8000/docs**
 
-------------------------------------------------------------------------
+FastAPI's Swagger UI provides an interactive way to send requests and inspect responses.
 
-## Local development
+---
+
+## 🚀 Local Setup
 
 ### Prerequisites
 
--   Python 3.11+
--   Git
--   Docker Desktop
--   Terraform 1.6+
--   PowerShell 7+ for the PowerShell script
+- Python 3.11+
+- Git
+- Docker Desktop
+- Terraform 1.6+
+- PowerShell 7+
 
 ### Windows
 
-``` powershell
+```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -183,149 +145,168 @@ uvicorn app.main:app
 
 ### macOS / Linux
 
-``` bash
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app
 ```
 
-Then open `http://127.0.0.1:8000/docs`.
+Then open:
 
-------------------------------------------------------------------------
+**http://127.0.0.1:8000/docs**
 
-## Testing
+---
 
-Run:
+## 🧪 Testing
 
-``` bash
+Run the test suite:
+
+```bash
 pytest -q
 ```
 
-The local test suite covers the API and configuration-validation logic.
+The project includes API and configuration-validation tests.
 
-Current local validation:
+Current local test result:
 
-``` text
+```text
 5 passed
 ```
 
-------------------------------------------------------------------------
+---
 
-## Docker
+## 🐳 Docker
 
-``` bash
+Build the application image:
+
+```bash
 docker build -t azure-devops-operations-lab .
+```
+
+Run it locally:
+
+```bash
 docker run --rm -p 8000:8000 azure-devops-operations-lab
 ```
 
-Or:
+Or use Docker Compose:
 
-``` bash
+```bash
 docker compose up --build
 ```
 
-------------------------------------------------------------------------
+---
 
-## Terraform
+## ☁️ Terraform
 
-The Terraform module demonstrates Azure Infrastructure as Code,
-including an Azure resource group and storage account.
+The Terraform configuration demonstrates Infrastructure as Code for Azure resources.
 
-``` bash
+From the Terraform directory:
+
+```bash
 cd terraform
 terraform init
 terraform fmt -check
 terraform validate
 ```
 
-A real deployment requires an Azure subscription and appropriate
-credentials.
+A real Azure deployment requires an Azure subscription and appropriate credentials.
 
-```{=html}
-<details>
-```
-```{=html}
-<summary>
-```
-`<strong>`{=html}Azure / security notes`</strong>`{=html}
-```{=html}
-</summary>
-```
-Credentials are supplied through environment variables rather than
-source code.
+### Security
 
-`.gitignore` excludes:
+Credentials are supplied through environment variables rather than source code.
 
-``` text
+The repository ignores:
+
+```text
 .env
 .terraform/
 *.tfstate
 *.tfstate.*
 ```
 
-The Azure REST example also defaults to dry-run behavior so it does not
-unexpectedly modify cloud resources.
+Never commit:
 
-Never commit Azure access tokens, API keys, passwords, `.env` files, or
-Terraform state.
+- Azure access tokens
+- API keys
+- passwords
+- `.env` files
+- Terraform state
 
-```{=html}
-</details>
-```
+The Azure REST example supports dry-run execution so requests can be tested without making live changes.
 
-------------------------------------------------------------------------
+---
 
-## Operations scripts
+## 🛠️ Operations Scripts
 
 ### Python
 
-``` bash
+Check the local environment:
+
+```bash
 python scripts/check_environment.py
+```
+
+Run the Azure REST example in dry-run mode:
+
+```bash
 python scripts/azure_rest_example.py --dry-run
 ```
 
 ### PowerShell
 
-``` powershell
+```powershell
 pwsh ./scripts/powershell/validate-environment.ps1
 ```
 
-The Azure REST example reads configuration from environment variables
-and requires `AZURE_ACCESS_TOKEN` only for a live request.
+These scripts provide operational checks that can be run independently of the API.
 
-------------------------------------------------------------------------
+---
 
-## CI/CD
+## 🔄 CI/CD
 
-Two GitHub Actions workflows are included.
+GitHub Actions is used to automate application and infrastructure validation.
 
-**Application CI** - installs dependencies - checks Python compilation -
-runs tests - builds the Docker image
+### Application CI
 
-**Terraform workflow** - initializes Terraform - checks formatting -
-validates the Terraform configuration
+The application workflow:
 
-This keeps basic quality checks running whenever changes are pushed to
-the repository.
+1. Installs Python dependencies
+2. Checks Python compilation
+3. Runs the automated tests
+4. Builds the Docker image
 
-------------------------------------------------------------------------
+### Terraform Validation
 
-## Repository structure
+The Terraform workflow:
 
-``` text
+1. Initializes Terraform
+2. Checks Terraform formatting
+3. Validates the Terraform configuration
+
+This keeps application and infrastructure changes covered by automated checks.
+
+---
+
+## 📁 Project Structure
+
+```text
 azure-devops-operations-lab/
-├── .github/workflows/
-│   ├── ci.yml
-│   └── terraform.yml
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── terraform.yml
 ├── app/
 │   ├── main.py
 │   ├── models.py
-│   └── services/config_validator.py
+│   └── services/
+│       └── config_validator.py
 ├── scripts/
 │   ├── azure_rest_example.py
 │   ├── check_environment.py
-│   └── powershell/validate-environment.ps1
+│   └── powershell/
+│       └── validate-environment.ps1
 ├── terraform/
 │   ├── main.tf
 │   ├── outputs.tf
@@ -341,35 +322,25 @@ azure-devops-operations-lab/
 └── README.md
 ```
 
-------------------------------------------------------------------------
+---
 
-## Why I built it
+## 💡 Why I Built It
 
-I wanted one project where I could work through the full path from
-application code to operational tooling and cloud infrastructure:
+I wanted one project where I could work through the path from application code to operational tooling and cloud infrastructure.
 
-**code → test → containerize → validate → automate → provision**
+Instead of building another standalone API or a basic CI pipeline, I wanted the pieces to work together:
 
-It is deliberately small enough to understand end-to-end, while still
-using practices that carry over to larger DevOps and cloud environments.
+**application → tests → container → CI → infrastructure → cloud operations**
 
-------------------------------------------------------------------------
+The result is a small end-to-end lab that gives me practical experience with application development, automation, Infrastructure as Code, containers, and CI/CD.
 
-## Author
+---
+
+## 👤 Author
 
 **Aditya Yadav**
 
-Applied Computer Science student focused on software development, cloud,
-automation, and DevOps.
+Applied Computer Science student focused on software development, cloud, automation, and DevOps.
 
--   GitHub: https://github.com/Iamaditya9
--   LinkedIn: https://www.linkedin.com/in/aditya-yadav-tech/
-
-```{=html}
-<p align="center">
-```
-`<sub>`{=html}Built with Python, FastAPI, Terraform, Docker, GitHub
-Actions, PowerShell, and Azure.`</sub>`{=html}
-```{=html}
-</p>
-```
+- GitHub: [Iamaditya9](https://github.com/Iamaditya9)
+- LinkedIn: [Aditya Yadav](https://www.linkedin.com/in/aditya-yadav-tech/)
