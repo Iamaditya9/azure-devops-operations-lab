@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: dev
+      AZURE_SUBSCRIPTION_ID: local-demo
+      AZURE_RESOURCE_GROUP: local-demo
